@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /Users/happy/claude-workspace/ai-testcase/frontend/src -type f -name *.tsx -o -name *.ts -o -name *.json)",
+      "Bash(ls -la /Users/happy/claude-workspace/ai-testcase/frontend/src/app/\\\\\\(auth\\\\\\)/)"
+    ]
+  }
+}
