@@ -57,3 +57,234 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* ============================================================
+   Auth Pages — Dark Geek Style
+   ============================================================ */
+
+@keyframes auth-fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@layer components {
+  /* ---------- Layout ---------- */
+  .auth-layout {
+    position: relative;
+    min-height: 100vh;
+    background-color: #0a0a0f;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    --auth-cyan: #00ffcc;
+    --auth-blue: #0066ff;
+    --auth-glass-bg: rgba(255, 255, 255, 0.05);
+    --auth-glass-bg-fallback: #111827;
+    --auth-glass-border: rgba(0, 255, 204, 0.2);
+    --auth-cyan-dim: rgba(0, 255, 204, 0.15);
+    --auth-cyan-glow: rgba(0, 255, 204, 0.4);
+    --auth-text-primary: #ffffff;
+    --auth-text-secondary: rgba(255, 255, 255, 0.6);
+  }
+
+  .auth-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .auth-content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 448px;
+    padding: 1rem;
+  }
+
+  /* ---------- Card (Glassmorphism) ---------- */
+  .auth-card {
+    background: var(--auth-glass-bg);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid var(--auth-glass-border);
+    border-radius: 1rem;
+    box-shadow:
+      0 0 0 1px rgba(0, 255, 204, 0.05),
+      0 8px 32px rgba(0, 0, 0, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    color: var(--auth-text-primary);
+    animation: auth-fade-in-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+    padding: 2rem;
+  }
+
+  @supports not (backdrop-filter: blur(1px)) {
+    .auth-card {
+      background: var(--auth-glass-bg-fallback);
+    }
+  }
+
+  /* ---------- Logo ---------- */
+  .auth-logo {
+    color: var(--auth-cyan);
+    text-shadow: 0 0 16px var(--auth-cyan-glow);
+    font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', monospace;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+    letter-spacing: 0.15em;
+    font-weight: 700;
+  }
+
+  /* ---------- Card Header ---------- */
+  .auth-card-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .auth-card-title {
+    color: var(--auth-text-primary);
+    text-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
+    font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', monospace;
+    letter-spacing: 0.05em;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+  }
+
+  .auth-card-description {
+    color: var(--auth-text-secondary);
+    font-size: 0.875rem;
+  }
+
+  /* ---------- Form Fields ---------- */
+  .auth-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .auth-label {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1;
+  }
+
+  .auth-input {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    color: var(--auth-text-primary) !important;
+    border-radius: 0.5rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .auth-input::placeholder {
+    color: rgba(255, 255, 255, 0.3) !important;
+  }
+
+  .auth-input:focus {
+    outline: none !important;
+    border-color: var(--auth-cyan) !important;
+    box-shadow: 0 0 0 1px var(--auth-cyan), 0 0 12px var(--auth-cyan-dim) !important;
+    ring-offset-width: 0 !important;
+  }
+
+  /* ---------- Error ---------- */
+  .auth-error {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #fca5a5;
+    border-radius: 0.375rem;
+    padding: 0.75rem;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+  }
+
+  .auth-field-error {
+    color: #f87171;
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+  }
+
+  /* ---------- Submit Button ---------- */
+  .auth-btn-submit {
+    background: linear-gradient(135deg, var(--auth-cyan) 0%, var(--auth-blue) 100%) !important;
+    color: #0a0a0f !important;
+    font-weight: 700 !important;
+    border: none !important;
+    border-radius: 0.5rem;
+    transition: box-shadow 0.25s, transform 0.15s, filter 0.25s !important;
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .auth-btn-submit:hover:not(:disabled) {
+    box-shadow: 0 0 20px rgba(0, 255, 204, 0.5), 0 0 40px rgba(0, 255, 204, 0.2) !important;
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+  }
+
+  .auth-btn-submit:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  .auth-btn-submit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* ---------- Footer / Link ---------- */
+  .auth-footer {
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--auth-text-secondary);
+  }
+
+  .auth-link {
+    color: var(--auth-cyan) !important;
+    text-decoration: none;
+    transition: text-shadow 0.2s;
+  }
+
+  .auth-link:hover {
+    text-shadow: 0 0 8px var(--auth-cyan-glow);
+    text-decoration: underline;
+  }
+
+  /* ---------- Mobile ---------- */
+  @media (max-width: 480px) {
+    .auth-content {
+      padding: 0.75rem;
+    }
+    .auth-card {
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+    }
+  }
+
+  /* ---------- Reduced Motion ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    .auth-card {
+      animation: none;
+    }
+    .auth-btn-submit {
+      transition: none !important;
+    }
+    .auth-input {
+      transition: none;
+    }
+  }
+}

@@ -24,9 +24,6 @@ npm run db:studio             # 打开 Prisma Studio（http://localhost:5555）
 
 # 构建生产包
 npm run build
-
-# 前端 lint
-npm run lint --prefix frontend
 ```
 
 后端单独运行（在 `backend/` 目录）：
@@ -34,19 +31,6 @@ npm run lint --prefix frontend
 npx prisma migrate dev --name <migration_name>  # 创建新迁移
 npx prisma generate                              # 重新生成 Prisma Client
 ```
-
-## 环境变量
-
-复制 `.env.example` 到 `backend/.env`，默认值匹配 docker-compose.yml 的 MySQL 配置：
-
-```
-DATABASE_URL="mysql://testuser:testpassword@localhost:3306/ai_testcase"
-JWT_SECRET="your-super-secret-jwt-key-change-in-production"
-JWT_EXPIRES_IN="7d"
-PORT=3001
-```
-
-前端在 `frontend/.env.local` 中配置：`NEXT_PUBLIC_API_URL=http://localhost:3001`
 
 ## 架构概览
 
@@ -56,20 +40,18 @@ PORT=3001
 
 Express + TypeScript，分层架构：`routes → controllers → services`
 
-- **入口**：`src/index.ts` 加载 env，`src/app.ts` 注册中间件（CORS 允许 localhost:3000）和路由，所有 API 挂载在 `/api` 前缀下
+- **入口**：`src/index.ts` 加载 dotenv，`src/app.ts` 注册中间件和路由
 - **请求流**：`routes/` 定义路径 → `controllers/` 解析请求/调用 Service/格式化响应 → `services/` 包含所有业务逻辑和 Prisma 查询
 - **统一响应格式**：所有响应通过 `utils/response.ts` 的 `successResponse` / `errorResponse` 输出，格式为 `{ success, data/error, message? }`
 - **Service 错误抛出约定**：Service 层抛出 `{ statusCode, message }` 对象，Controller 捕获后调用 `errorResponse`
 - **密码安全**：所有对外输出的用户对象必须通过 Prisma `select: safeUserSelect` 明确排除 `password` 字段
 - **JWT**：`utils/jwt.ts` 封装签发/验证，Payload 为 `{ id, email, role }`；`middleware/auth.middleware.ts` 解析 `Authorization: Bearer <token>` 并挂载到 `req.user`
-- **环境变量**：通过 `config/env.ts` 用 Zod 强类型校验，访问 env 变量应从此模块导入
-- **全局错误处理**：`middleware/error.middleware.ts` 兜底捕获未处理异常
 
 ### 前端（`frontend/`）
 
 Next.js 14 App Router + TypeScript，路由结构：
 
-- `(auth)/login`、`(auth)/register` — 公开页面（Auth 路由组），共享 `(auth)/layout.tsx` 提供暗黑极客风粒子背景，**layout 层不卸载**确保页面切换时动效连续
+- `(auth)/login`、`(auth)/register` — 公开页面（Auth 路由组）
 - `dashboard/` — 受保护区域，`dashboard/layout.tsx` 是客户端鉴权守卫，检查 `isAuthenticated`，未登录则 `router.replace('/login')`
 - `page.tsx`（根）— 直接 `redirect('/login')`
 
@@ -77,9 +59,7 @@ Next.js 14 App Router + TypeScript，路由结构：
 
 **API 通信**：`lib/api.ts` 是 axios 实例，请求拦截器从 localStorage 读取 token 注入 `Authorization` 头；响应拦截器在 401 时清除 token 并跳转 `/login`。具体 API 函数在 `lib/auth.ts`。
 
-**UI 风格**：Auth 页面采用暗黑极客风，`components/auth/ParticleCanvas.tsx` 用原生 Canvas API 实现海浪粒子动效；表单容器使用 Glassmorphism（`backdrop-blur`）。其余 UI 组件（Button、Input、Label、Card）为 shadcn/ui 风格，手动维护在 `components/ui/`，使用 Radix UI 原语 + Tailwind CSS 变量体系。
-
-**CSS 架构**：`globals.css` 中 `@layer components` 下定义 `.auth-*` 命名空间（优先级高于 `@layer utilities`），auth 页面专用样式全部在此，避免影响其他页面主题。
+**UI 组件**：shadcn/ui 风格的基础组件手动维护在 `components/ui/`（Button、Input、Label、Card），使用 Radix UI 原语 + Tailwind CSS 变量体系（CSS 变量定义在 `globals.css`）。
 
 ### Zod 校验共用规则
 

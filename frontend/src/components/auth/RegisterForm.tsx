@@ -8,8 +8,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { registerUser } from '@/lib/auth';
 
 const registerSchema = z.object({
@@ -59,67 +57,67 @@ export function RegisterForm() {
   };
 
   return (
-    <Card className="w-full max-w-md">
-      <CardHeader>
-        <CardTitle>创建账号</CardTitle>
-        <CardDescription>填写以下信息完成注册</CardDescription>
-      </CardHeader>
+    <div className="auth-card w-full">
+      <div className="auth-logo">[ AI-TESTCASE ]</div>
+      <div className="auth-card-header">
+        <h3 className="auth-card-title">创建账号</h3>
+        <p className="auth-card-description">填写以下信息完成注册</p>
+      </div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <CardContent className="space-y-4">
-          {error && (
-            <div className="rounded-md bg-destructive/15 p-3 text-sm text-destructive">
-              {error}
-            </div>
-          )}
-          <div className="space-y-2">
-            <Label htmlFor="email">邮箱</Label>
+        <div>
+          {error && <div className="auth-error">{error}</div>}
+          <div className="auth-field">
+            <label htmlFor="email" className="auth-label">邮箱</label>
             <Input
               id="email"
               type="email"
               placeholder="your@email.com"
+              className="auth-input"
               {...register('email')}
             />
             {errors.email && (
-              <p className="text-sm text-destructive">{errors.email.message}</p>
+              <p className="auth-field-error">{errors.email.message}</p>
             )}
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="username">用户名</Label>
+          <div className="auth-field">
+            <label htmlFor="username" className="auth-label">用户名</label>
             <Input
               id="username"
               type="text"
               placeholder="username"
+              className="auth-input"
               {...register('username')}
             />
             {errors.username && (
-              <p className="text-sm text-destructive">{errors.username.message}</p>
+              <p className="auth-field-error">{errors.username.message}</p>
             )}
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="password">密码</Label>
+          <div className="auth-field">
+            <label htmlFor="password" className="auth-label">密码</label>
             <Input
               id="password"
               type="password"
               placeholder="至少8位，含大小写字母和数字"
+              className="auth-input"
               {...register('password')}
             />
             {errors.password && (
-              <p className="text-sm text-destructive">{errors.password.message}</p>
+              <p className="auth-field-error">{errors.password.message}</p>
             )}
           </div>
-        </CardContent>
-        <CardFooter className="flex flex-col space-y-4">
-          <Button type="submit" className="w-full" disabled={isLoading}>
+        </div>
+        <div>
+          <Button type="submit" className="auth-btn-submit" disabled={isLoading}>
             {isLoading ? '注册中...' : '注册'}
           </Button>
-          <p className="text-sm text-muted-foreground">
+          <p className="auth-footer">
             已有账号？{' '}
-            <Link href="/login" className="text-primary hover:underline">
+            <Link href="/login" className="auth-link">
               立即登录
             </Link>
           </p>
-        </CardFooter>
+        </div>
       </form>
-    </Card>
+    </div>
   );
 }

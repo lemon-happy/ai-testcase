@@ -2,7 +2,11 @@
   "permissions": {
     "allow": [
       "Bash(find /Users/happy/claude-workspace/ai-testcase/frontend/src -type f -name *.tsx -o -name *.ts -o -name *.json)",
-      "Bash(ls -la /Users/happy/claude-workspace/ai-testcase/frontend/src/app/\\\\\\(auth\\\\\\)/)"
+      "Bash(ls -la /Users/happy/claude-workspace/ai-testcase/frontend/src/app/\\\\\\(auth\\\\\\)/)",
+      "Bash(find /Users/happy/claude-workspace/ai-testcase -maxdepth 1 -type f -name package.json -o -name *.md -o -name docker-compose.yml -o -name .env*)",
+      "Bash(bash /Users/happy/.claude/statusline-command.sh)",
+      "Bash(echo \"EXIT:$?\")",
+      "Bash(kill %1)"
     ]
   }
 }
