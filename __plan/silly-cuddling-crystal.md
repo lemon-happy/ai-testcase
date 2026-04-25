@@ -4,7 +4,7 @@
 
 当前 `dashboard/page.tsx` 只是一个占位卡片，`dashboard/layout.tsx` 只有鉴权守卫。
 需要将其改造为带左侧导航菜单的完整仪表盘，右侧展示 5 张带静态数据的 StatCard 和迷你图表，
-整体风格延续登录页的暗黑极客风（`#0a0a0f` 背景 + `#00ffcc` Cyan 主色）。
+整体风格延续登录页的暗黑极客风（`#0a0a0f` 背景 + `#00ffcc` Cyan 主色），请使用/frontend-design这个skill进行前端页面设计。
 
 ---
 

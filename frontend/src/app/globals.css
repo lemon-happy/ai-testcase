@@ -288,3 +288,392 @@
     }
   }
 }
+
+/* ============================================================
+   Dashboard Animations
+   ============================================================ */
+
+@keyframes chart-load {
+  from {
+    opacity: 0;
+    stroke-dashoffset: 1000;
+  }
+  to {
+    opacity: 1;
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes donut-load {
+  from {
+    stroke-dashoffset: var(--circumference, 1000);
+  }
+  to {
+    stroke-dashoffset: var(--offset, 0);
+  }
+}
+
+@keyframes bar-load {
+  from {
+    height: 0;
+    y: 100%;
+    opacity: 0;
+  }
+  to {
+    height: var(--target-height, 100%);
+    y: var(--target-y, 0);
+    opacity: 1;
+  }
+}
+
+@keyframes pie-load {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes area-load {
+  from {
+    opacity: 0;
+    stroke-dashoffset: 1000;
+  }
+  to {
+    opacity: 1;
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes gauge-load {
+  from {
+    stroke-dashoffset: 314;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 currentColor;
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(0, 0, 0, 0);
+  }
+}
+
+@keyframes spinner {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes highlight-flash {
+  0%, 100% {
+    filter: drop-shadow(0 0 2px var(--card-glow-color));
+  }
+  50% {
+    filter: drop-shadow(0 0 10px var(--card-glow-color));
+  }
+}
+
+/* ============================================================
+   Dashboard Styles
+   ============================================================ */
+
+@layer components {
+  /* 侧边栏容器 */
+  .dashboard-sidebar {
+    width: 240px;
+    background: rgba(10, 10, 15, 0.95);
+    backdrop-filter: blur(20px);
+    border-right: 1px solid rgba(0, 255, 204, 0.15);
+    --dash-cyan: #00ffcc;
+    --dash-cyan-dim: rgba(0, 255, 204, 0.12);
+    --dash-cyan-glow: rgba(0, 255, 204, 0.3);
+
+    /* 背景网格纹理 */
+    background-image: linear-gradient(90deg, rgba(0, 255, 204, 0.03) 1px, transparent 1px);
+    background-size: 20px 100%;
+    box-shadow: inset -1px 0 0 rgba(0, 255, 204, 0.15);
+  }
+
+  /* 菜单项 */
+  .dashboard-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .dashboard-nav-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 2px;
+    height: 0;
+    background: linear-gradient(180deg, #00ffcc, transparent);
+    transition: height 0.3s ease-out;
+  }
+
+  .dashboard-nav-item:hover {
+    background: linear-gradient(90deg, rgba(0, 255, 204, 0.08), transparent);
+    color: #00ffcc;
+  }
+
+  .dashboard-nav-item:hover::before {
+    height: 100%;
+  }
+
+  /* 活跃菜单项 */
+  .dashboard-nav-active {
+    background: linear-gradient(90deg, rgba(0, 255, 204, 0.15) 0%, transparent 100%);
+    border-left: 2px solid #00ffcc;
+    color: #00ffcc;
+    font-weight: 500;
+    text-shadow: 0 0 8px rgba(0, 255, 204, 0.3);
+    padding-left: 14px;
+  }
+
+  .dashboard-nav-active::after {
+    content: '';
+    position: absolute;
+    right: 12px;
+    width: 6px;
+    height: 6px;
+    background: #00ffcc;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #00ffcc;
+  }
+
+  /* Stat Card 玻璃态容器 */
+  .dashboard-stat-card {
+    background:
+      linear-gradient(90deg, rgba(0, 255, 204, 0.03) 1px, transparent 1px),
+      linear-gradient(rgba(0, 255, 204, 0.03) 1px, transparent 1px),
+      linear-gradient(135deg, rgba(0, 255, 204, 0.08) 0%, rgba(0, 0, 0, 0) 100%),
+      #0a0a0f;
+    background-size:
+      20px 20px,
+      20px 20px,
+      100% 100%,
+      100% 100%;
+    background-attachment: fixed;
+
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      0 0 20px rgba(0, 0, 0, 0.3);
+
+    transition:
+      border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    animation: card-enter 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+
+  .dashboard-stat-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--card-glow-color, rgba(0, 255, 204, 0.2)),
+      transparent
+    );
+    pointer-events: none;
+  }
+
+  /* Stat Card 悬停发光效果 */
+  .dashboard-stat-card:hover {
+    border-color: var(--card-glow-color, rgba(0, 255, 204, 0.5));
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.15),
+      0 0 30px var(--card-glow-color, rgba(0, 255, 204, 0.25)),
+      0 0 60px rgba(0, 0, 0, 0.2);
+    transform: translateY(-4px) scale(1.02);
+  }
+
+  /* 卡片内容样式 */
+  .stat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    margin-bottom: 16px;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.45);
+  }
+
+  .stat-trend {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .stat-trend.positive {
+    color: #22c55e;
+  }
+
+  .stat-trend.negative {
+    color: #ef4444;
+  }
+
+  .stat-value {
+    font-size: 32px;
+    font-weight: 700;
+    background: linear-gradient(
+      135deg,
+      var(--card-glow-color, rgba(0, 255, 204, 1)) 0%,
+      var(--card-glow-color, rgba(0, 255, 204, 0.8)) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 4px;
+    letter-spacing: -0.5px;
+  }
+
+  .stat-value.updating {
+    animation: highlight-flash 0.6s ease-in-out;
+  }
+
+  .stat-unit {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-left: 4px;
+  }
+
+  .stat-subtitle {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.4);
+    margin-bottom: 16px;
+  }
+
+  .stat-chart-container {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding: 12px;
+    margin: 12px 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat-chart-container::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(
+      circle,
+      var(--card-glow-color, rgba(0, 255, 204, 0.1)),
+      transparent
+    );
+    pointer-events: none;
+  }
+
+  .stat-chart {
+    position: relative;
+    z-index: 1;
+  }
+
+  .stat-footer {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.35);
+    margin-top: 8px;
+    text-align: center;
+  }
+
+  /* 刷新按钮动画 */
+  .btn-refresh.loading {
+    animation: spinner 1s linear infinite;
+  }
+
+  /* nth-child 延迟 */
+  .dashboard-stat-card:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+  .dashboard-stat-card:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  .dashboard-stat-card:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+  .dashboard-stat-card:nth-child(4) {
+    animation-delay: 0.4s;
+  }
+  .dashboard-stat-card:nth-child(5) {
+    animation-delay: 0.5s;
+  }
+
+  /* 响应式 */
+  @media (max-width: 640px) {
+    .dashboard-sidebar {
+      width: 200px;
+      position: fixed;
+      left: 0;
+      z-index: 100;
+      height: 100vh;
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+    }
+
+    .dashboard-sidebar.open {
+      transform: translateX(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dashboard-stat-card,
+    svg polyline,
+    svg path {
+      animation: none !important;
+    }
+  }
+}
