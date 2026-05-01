@@ -96,3 +96,5 @@ Next.js 14 App Router + TypeScript，路由结构：
 MySQL 5.7，Prisma ORM。当前唯一表为 `users`（对应 Prisma model `User`），含 `UserRole` 枚举（`USER` / `ADMIN`）。迁移文件在 `backend/prisma/migrations/`。
 
 严禁直接删除数据库记录
+
+r

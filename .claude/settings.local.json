@@ -6,7 +6,18 @@
       "Bash(find /Users/happy/claude-workspace/ai-testcase -maxdepth 1 -type f -name package.json -o -name *.md -o -name docker-compose.yml -o -name .env*)",
       "Bash(bash /Users/happy/.claude/statusline-command.sh)",
       "Bash(echo \"EXIT:$?\")",
-      "Bash(kill %1)"
+      "Bash(kill %1)",
+      "mcp__playwright__browser_navigate",
+      "mcp__playwright__browser_snapshot",
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__query-docs",
+      "Bash(grep -E \"\\\\.\\(ts|tsx|js|jsx\\)$\")",
+      "WebSearch",
+      "WebFetch(domain:www.prisma.io)",
+      "WebFetch(domain:zustand.docs.pmnd.rs)",
+      "WebFetch(domain:axios-http.com)",
+      "WebFetch(domain:axios.rest)",
+      "WebFetch(domain:www.npmjs.com)"
     ]
   }
 }
